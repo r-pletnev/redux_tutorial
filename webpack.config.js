@@ -11,33 +11,41 @@ var HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
   entry: [
-    'webpack-hot-middleware/client',
-    './src/index'
-  
+    './src/index',
+    'babel-polyfill'
   ],
 
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
     publickPath: '/static/'
-  
   },
 
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
     HtmlWebpackPluginConfig,
+  ],
+
+  preLoaders: [
+    {
+      test: /\.js$/,
+      loaders: ['eslint'],
+      include: [
+        path.resolve(__dirname, 'src'),
+      ],
+    
+    }
+  
   ],
 
   module: {
     loaders:[{
       test: /\.js$/,
-      loaders: ['react-hot'],
-      include: path.join(__dirname, 'src')
-    
+      loaders: ['react-hot', 'babel-loader'],
+      include: path.join(__dirname, 'src'),
+      plugins: ['transform-runtime'],
     }]
-  
   }
 
 }
