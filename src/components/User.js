@@ -1,6 +1,6 @@
-import React, {Proptypes, Components} from 'react'
+import React, {PropTypes, Component} from 'react'
 
-export default class User extends Components {
+export default class User extends Component {
   render() {
     const {name} = this.props
     return <div>

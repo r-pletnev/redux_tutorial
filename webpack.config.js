@@ -1,6 +1,8 @@
 var path = require('path')
 var webpack = require('webpack')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
+var autoprefixer = require('autoprefixer')
+var precss = require('precss')
 
 var HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   template: __dirname + '/src/index.html',
@@ -27,25 +29,29 @@ module.exports = {
     HtmlWebpackPluginConfig,
   ],
 
-  preLoaders: [
-    {
-      test: /\.js$/,
-      loaders: ['eslint'],
-      include: [
-        path.resolve(__dirname, 'src'),
-      ],
-    
-    }
-  
-  ],
-
   module: {
+
+
     loaders:[{
       test: /\.js$/,
       loaders: ['react-hot', 'babel-loader'],
       include: path.join(__dirname, 'src'),
       plugins: ['transform-runtime'],
-    }]
+    },
+
+    {
+      test: /\.css$/,
+      loader: 'style-loader!css-loader!postcss-loader'
+    
+    }
+    
+    
+    ]
+  },
+
+  postcss: function() {
+    return [autoprefixer, precss]
+  
   }
 
 }
